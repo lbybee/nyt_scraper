@@ -25,6 +25,12 @@ To download the data you simply run the script, initialize the start and end dat
         d2 = datetime(2013, 2, 1, 1, 1)
         key = "apikeyhere"
         output = "01-02-2013.json"
-        downloadDateRange(d1, d2, key, output)
+        downloadDateRange(d1, d2, output, key)
         
 This will then download all the articles form January to February of 2013 to the file "01-02-2013.json".  If the process crashes for any reason it can easily be restarted by replacing the start date by the last date that the **downloadDateRange** was able to reach.  This is made easy because for each article **downloadDateRange** prints the total run time, the current date, the starting date, the end date, the current page, and the total number of pages.
+
+Alternatively, you could run the script download_nyt_data.py from the command line.  An example of this would be
+
+        python download_nyt_data.py ../results 01-02-2013.json apikey 2013 1 1 2013 2 1
+        
+This would download the data to the results directory in the output file for all dates between January and February of 2013.
