@@ -6,12 +6,12 @@ import os
 directory = sys.argv[1]
 f_name = sys.argv[2]
 api_key = sys.argv[3]
-s_y = sys.argv[4]
-s_m = sys.argv[5]
-s_d = sys.argv[6]
-e_y = sys.argv[7]
-e_m = sys.argv[8]
-e_d = sys.argv[9]
+s_y = int(sys.argv[4])
+s_m = int(sys.argv[5])
+s_d = int(sys.argv[6])
+e_y = int(sys.argv[7])
+e_m = int(sys.argv[8])
+e_d = int(sys.argv[9])
 
 
 d1 = datetime(s_y, s_m, s_d, 1, 1)
