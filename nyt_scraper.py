@@ -39,6 +39,7 @@ def downloadDateRange(s_date, e_date, o_file, api_key):
     t_1 = datetime.now()
     str_s_date = s_date.strftime("%Y%m%d")
     str_e_date = e_date.strftime("%Y%m%d")
+    log_f = open("log.txt", "ab")
 
     for d in daterange(s_date, e_date):
         # make string date for the request
@@ -65,7 +66,11 @@ def downloadDateRange(s_date, e_date, o_file, api_key):
                         json.dump(a, o_data)
                         o_data.write("\n")
                 print datetime.now() - t_1, str_date, str_s_date, str_e_date, stp, mx_pg
+                log_f.write("%s, %s, %s, %s, %s, %s\n" % (str(datetime.now() - t_1), str_date,
+                                                          str_s_date, str_e_date, str(stp),
+                                                          str(mx_pg)))
             except Exception as e:
                 print e
+                log_f.write("%s\n" % e)
             stp += 1
             time.sleep(8.7)
