@@ -1,4 +1,5 @@
 import json
+import csv
 from datetime import datetime
 
 
@@ -13,7 +14,7 @@ def loadFile(f_name):
                  "id": r["_id"]}
                 for r in rj_data]
     rjf_data = [r for r in rjf_data if r["text"] is not None]
-    return rjf_data, id_list
+    return rjf_data
 
 
 def loadAllFiles(f_list):
@@ -21,14 +22,14 @@ def loadAllFiles(f_list):
     the data"""
 
     # first list
-    f_list = []
+    i_list = []
     id_list = []
     for f in f_list:
-        f_t, id_t = loadFile(f)
-        f_list.extend(f_t)
+        f_t = loadFile(f)
+        i_list.extend(f_t)
     # clean list
     c_list = []
-    for f in f_list:
+    for f in i_list:
         if f["id"] not in id_list:
             id_list.append(f["id"])
             c_list.append(f)
@@ -53,5 +54,5 @@ def writeToCsv(news_dict, f_name):
     f_data = open(f_name, "wb")
     writer = csv.writer(f_data)
     for k in news_dict:
-        writer.writerow([k, news_dict[k]])
+        writer.writerow([k, news_dict[k].replace(",", "")])
     f_data.close()
