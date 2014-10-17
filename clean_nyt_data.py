@@ -17,6 +17,20 @@ def loadFile(f_name):
     return rjf_data
 
 
+def fastLoad(f_list):
+    """loads all the files and removes the duplicates quickly"""
+
+    data_list = []
+    t_1 = datetime.now()
+    for i, f in enumerate(f_list):
+        t_data = loadFile(f)
+        data_list.extend(t_data)
+        data_list = [dict(r) for r in set([tuple(d.items()) for d in data_list])]
+        print i, datetime.now() - t_1, "removing duplicates..."
+    print "Done removing duplicates."
+    return data_list
+
+
 def fullLoad(f_list):
     """fully loads a file and makes it into a dictionary"""
 
@@ -72,12 +86,14 @@ def loadAllFiles(f_list):
 def joinData(item_list):
     """takes in a list of news items and joins them by month"""
 
+    t_1 = datetime.now()
     news_dict = {}
-    for r in item_list:
+    for i, r in enumerate(item_list):
         str_date = r["date"].strftime("%Y-%m")
         if str_date not in news_dict:
             news_dict[str_date] = ""
         news_dict[str_date] += " %s" % r["text"]
+        print (i * 100.) / ln_item_list, datetime.now() - t_1
     return news_dict
 
 
