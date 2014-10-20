@@ -31,6 +31,8 @@ def fastLoad(f_list):
     return data_list
 
 
+
+
 def fullLoad(f_list):
     """fully loads a file and makes it into a dictionary"""
 
@@ -88,6 +90,7 @@ def joinData(item_list):
 
     t_1 = datetime.now()
     news_dict = {}
+    ln_item_list = len(item_list)
     for i, r in enumerate(item_list):
         str_date = r["date"].strftime("%Y-%m")
         if str_date not in news_dict:
@@ -101,9 +104,9 @@ def writeToMonthCsv(news_dict):
     """writes each date to its own file"""
 
     for k in news_dict:
-        ouput_f = open(k + "nyt.csv", "wb")
+        output_f = open(k + ".csv", "wb")
         writer = csv.writer(output_f)
-        writer.writerow([news_dict[k].replace(",", "")])
+        writer.writerow([news_dict[k].replace(",", "").encode("utf-8")])
         output_f.close()
 
 
@@ -115,3 +118,11 @@ def writeToCsv(news_dict, f_name):
     for k in news_dict:
         writer.writerow([k, news_dict[k].replace(",", "")])
     f_data.close()
+
+
+def fullRunAll(f_list):
+    """does everything"""
+
+    data = fastLoad(f_list)
+    data_dict = joinData(data)
+    writeToMonthCsv(data_dict)
