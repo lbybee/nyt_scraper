@@ -85,6 +85,33 @@ def loadAllFiles(f_list):
     return c_list
 
 
+
+def cleanCList(c_list, decade_l):
+    """cleans a list of files and splits into decade files"""
+
+    ln_c_list = len(c_list)
+    t_1 = datetime.now()
+    decade_dict = {}
+    for d in decade_l:
+        decade_dict[d] = []
+    for i, c in enumerate(c_list):
+        c["date"] = c["date"].strftime("%Y-%m-%d")
+        for d in decade_l:
+            if d in c["date"]:
+                decade_dict[d].append(c)
+        print (i * 100.) / ln_c_list, datetime.now() - t_1
+    for d in decade_l:
+        output_f = open("clean_%s.json" % d, "wb")
+        json.dump(decade_dict[d], output_f)
+
+
+def fullCleanList(f_list, decade_l):
+    """does the full cleaning"""
+
+    data = fastLoad(f_list)
+    cleanCList(data, decade_l)
+
+
 def joinData(item_list):
     """takes in a list of news items and joins them by month"""
 
@@ -118,6 +145,21 @@ def writeToCsv(news_dict, f_name):
     for k in news_dict:
         writer.writerow([k, news_dict[k].replace(",", "")])
     f_data.close()
+
+
+def fullDecadeRun(f_list, decade_l):
+    """takes in a file list and decade list and writes
+    each decade to a monthly file"""
+
+    data = fastLoad(f_list)
+    data_dict = joinData(data)
+    for d in decade_l:
+        d_dict = {}
+        d_f = "monthly_%s.csv" % d
+        for t_d in data_dict:
+            if d in t_d:
+                d_dict[t_d] = data_dict[t_d]
+        writeToCsv(d_dict, d_f)
 
 
 def fullRunAll(f_list):

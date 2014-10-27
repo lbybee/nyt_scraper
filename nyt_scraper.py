@@ -37,13 +37,16 @@ def downloadDateRange(s_date, e_date, o_file, api_key):
 
     # intialize start time
     t_1 = datetime.now()
-    str_s_date = s_date.strftime("%Y%m%d")
-    str_e_date = e_date.strftime("%Y%m%d")
+    # normally I would just use strftime("%Y%m%d") but because we want
+    # to get dates before 1900 strftime doesn't work, that's pretty stupid
+    # but this is a "fix"
+    str_s_date = s_date.isoformat().split("T")[0].replace("-", "")
+    str_e_date = e_date.isoformat().split("T")[0].replace("-", "")
     log_f = open("log.txt", "ab")
 
     for d in daterange(s_date, e_date):
         # make string date for the request
-        str_date = d.strftime("%Y%m%d")
+        str_date = d.isoformat().split("T")[0].replace("-", "")
         # initalize the max page for the while loop, this will be updated
         # as you iterate through the pages, the initalized value is arbitrary
         # but greater than 0 or stp
